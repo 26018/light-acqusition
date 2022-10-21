@@ -1,10 +1,10 @@
 # 键盘监听时间间隔 单位(ms)
-checkTime::1
+checkTime::1000
 # 亮度浮动
 floatLight::5
 # 最大灰度值
 lightMax::255
 # 环境光采集间隔时间 单位(ms)
-gapTime::1
+gapTime::1000
 # 退出程序按键定义
 exitKey::L,J,H

@@ -10,10 +10,9 @@ import java.util.stream.Stream;
 public class ConfigUtil {
 
     private final static String path = "./config";
-
     private static Map<String, String> map;
 
-    public static <T> T get(String key,Class<T> clazz) throws IOException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
+    public static <T> T get(String key, Class<T> clazz) throws IOException, NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         if (map == null) {
             map = readConfigMap();
         }
@@ -21,6 +20,7 @@ public class ConfigUtil {
         T ret = clazz.getConstructor(String.class).newInstance(value);
         return ret;
     }
+
     private static Map<String, String> readConfigMap() throws IOException {
         if (map != null) {
             return map;
@@ -38,7 +38,7 @@ public class ConfigUtil {
         Stream<String> lines = bufferedReader.lines();
         map = new HashMap<>();
         lines.forEach(line -> {
-            if (!line.startsWith("#")){
+            if (!line.startsWith("#")) {
                 String[] split = line.split("::");
                 map.put(split[0], split[1]);
             }
@@ -47,6 +47,7 @@ public class ConfigUtil {
         fileReader.close();
         return map;
     }
+
     private static void defaultConfig() throws IOException {
         FileWriter fileWriter = new FileWriter(path);
         fileWriter.write("# 键盘监听时间间隔 单位(ms)\n");

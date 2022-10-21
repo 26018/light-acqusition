@@ -1,5 +1,5 @@
 package top.fixyou;
- 
+
 import top.fixyou.utils.ComputeUtil;
 import top.fixyou.utils.ConfigUtil;
 
@@ -23,6 +23,7 @@ public class BrightnessManager {
             throw new RuntimeException(e);
         }
     }
+
     public static void setBrightnessByGrayValue(int grayValue) throws IOException {
         if (changeLightValue(grayValue)) {
             currentLight = grayValue;
@@ -31,14 +32,14 @@ public class BrightnessManager {
             setBrightnessValue(percentage);
         }
     }
+
     private static void setBrightnessValue(int brightnessValue) throws IOException {
         //Creates a powerShell command that will set the brightness to the requested value (0-100),after the requested delay (in milliseconds) has passed.
-        String s = String.format("$brightness = %d;",brightnessValue)
+        String s = String.format("$brightness = %d;", brightnessValue)
                 + "$delay = 1;"
                 + "$myMonitor = Get-WmiObject -Namespace root\\wmi -Class WmiMonitorBrightnessMethods;"
                 + "$myMonitor.WmiSetBrightness($delay,$brightness)";
         String command = "powershell.exe  " + s;
-        // Executing the command
         Runtime.getRuntime().exec(command);
     }
 

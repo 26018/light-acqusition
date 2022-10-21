@@ -1,44 +1,38 @@
 package top.fixyou;
 
 import com.github.sarxos.webcam.Webcam;
-
 import top.fixyou.utils.ComputeUtil;
-import top.fixyou.utils.ConfigUtil;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.nio.Buffer;
-import java.nio.ByteBuffer;
 
 public class CameraManager {
-
     private static Webcam camera;
+    private static GlobalKeyManager exitKeyManager;
+
     public void startCamera() throws IOException {
         camera = Webcam.getDefault();
         camera.open();
         while (true) {
             BufferedImage image = camera.getImage();
-            if (image == null) {
-                continue;
-            }
-            int width = image.getWidth();
-            int height = image.getHeight();
-            for (int i = 0; i < width; i++) {
-                for (int j = 0; j < height; j++) {
-                    int rgb = image.getRGB(i, j);
-                    int red = (rgb >> 16) & 0xFF;
-                    int green = (rgb >> 8) & 0xFF;
-                    int blue = (rgb) & 0xFF;
-                    ComputeUtil.addPixel(red, green, blue);
+            if (image != null) {
+                int width = image.getWidth();
+                int height = image.getHeight();
+                for (int i = 0; i < width; i++) {
+                    for (int j = 0; j < height; j++) {
+                        int rgb = image.getRGB(i, j);
+                        int red = (rgb >> 16) & 0xFF;
+                        int green = (rgb >> 8) & 0xFF;
+                        int blue = (rgb) & 0xFF;
+                        ComputeUtil.addPixel(red, green, blue);
+                    }
                 }
+                int grayValue = ComputeUtil.grayValue();
+                BrightnessManager.setBrightnessByGrayValue(grayValue);
             }
-            int grayValue = ComputeUtil.grayValue();
-            BrightnessManager.setBrightnessByGrayValue(grayValue);
-            try {
-                Thread.sleep(ConfigUtil.get("gapTime", Integer.class));
-            } catch (Exception e) {
+            if (!exitKeyManager.running()) {
                 break;
             }
         }
@@ -58,5 +52,9 @@ public class CameraManager {
         jFrame.add(new TextField("关闭窗口退出程序"));
         jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         jFrame.setVisible(showWindow);
+    }
+
+    public void bind(GlobalKeyManager keyManager) {
+        exitKeyManager = keyManager;
     }
 }

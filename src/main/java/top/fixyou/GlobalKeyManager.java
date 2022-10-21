@@ -6,6 +6,7 @@ import org.jnativehook.NativeHookException;
 import org.jnativehook.keyboard.NativeKeyEvent;
 import org.jnativehook.keyboard.NativeKeyListener;
 import top.fixyou.utils.ConfigUtil;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
@@ -23,7 +24,8 @@ public class GlobalKeyManager {
     // 启动键盘监听
     public void start() throws NativeHookException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         if (keyListener == null) {
-            keyListener = new KeyListener() {};
+            keyListener = new KeyListener() {
+            };
         }
         keyListener.register();
         setRunning(true);
@@ -45,7 +47,8 @@ public class GlobalKeyManager {
             GlobalScreen.addNativeKeyListener(this);
             GlobalScreen.registerNativeHook();
         }
-        default boolean exitAble(String[] keys){
+
+        default boolean exitAble(String[] keys) {
             if (keys == null) {
                 return false;
             }
