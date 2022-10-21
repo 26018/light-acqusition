@@ -1,8 +1,7 @@
 package top.fixyou;
 
-import org.bytedeco.javacv.Frame;
-import org.bytedeco.javacv.Java2DFrameConverter;
-import org.bytedeco.javacv.OpenCVFrameGrabber;
+import com.github.sarxos.webcam.Webcam;
+
 import top.fixyou.utils.ComputeUtil;
 import top.fixyou.utils.ConfigUtil;
 
@@ -10,22 +9,25 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.nio.Buffer;
+import java.nio.ByteBuffer;
 
 public class CameraManager {
 
+    private static Webcam camera;
     public void startCamera() throws IOException {
-        OpenCVFrameGrabber grabber = new OpenCVFrameGrabber(0);
-        Java2DFrameConverter converter = new Java2DFrameConverter();
-        grabber.start();
-
+        camera = Webcam.getDefault();
+        camera.open();
         while (true) {
-            Frame frame = grabber.grab();
-            BufferedImage bufferedImage = converter.getBufferedImage(frame);
-            int width = bufferedImage.getWidth();
-            int height = bufferedImage.getHeight();
+            BufferedImage image = camera.getImage();
+            if (image == null) {
+                continue;
+            }
+            int width = image.getWidth();
+            int height = image.getHeight();
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
-                    int rgb = bufferedImage.getRGB(i, j);
+                    int rgb = image.getRGB(i, j);
                     int red = (rgb >> 16) & 0xFF;
                     int green = (rgb >> 8) & 0xFF;
                     int blue = (rgb) & 0xFF;
@@ -37,11 +39,10 @@ public class CameraManager {
             try {
                 Thread.sleep(ConfigUtil.get("gapTime", Integer.class));
             } catch (Exception e) {
-                System.out.println("call me back");
                 break;
             }
         }
-        grabber.release();
+        camera.close();
         cameraExitWindow(true);
     }
 

@@ -11,7 +11,7 @@ import top.fixyou.utils.ConfigUtil;
 
 public class Main {
 
-    public static void main(String[] args) throws NativeHookException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws NativeHookException, IOException, InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException, InterruptedException {
         // 关闭日志
         Logger.getLogger(GlobalScreen.class.getPackage().getName()).setLevel(Level.OFF);
 

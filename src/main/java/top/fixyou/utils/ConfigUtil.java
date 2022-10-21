@@ -1,8 +1,5 @@
 package top.fixyou.utils;
 
-
-import com.alibaba.fastjson.JSONObject;
-
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.channels.FileLockInterruptionException;
@@ -53,11 +50,11 @@ public class ConfigUtil {
     private static void defaultConfig() throws IOException {
         FileWriter fileWriter = new FileWriter(path);
         fileWriter.write("# 键盘监听时间间隔 单位(ms)\n");
-        fileWriter.write("checkTime::1000\n");
+        fileWriter.write("checkTime::1\n");
         fileWriter.write("# 亮度浮动\n");
-        fileWriter.write("floatLight::2\n");
+        fileWriter.write("floatLight::5\n");
         fileWriter.write("# 最大灰度值\n");
-        fileWriter.write("lightMax::120\n");
+        fileWriter.write("lightMax::255\n");
         fileWriter.write("# 环境光采集间隔时间 单位(ms)\n");
         fileWriter.write("gapTime::1\n");
         fileWriter.write("# 退出程序按键定义\n");
